@@ -1,0 +1,7 @@
+shopify-theme/
+docs/
+README.md
+publish-shopify-theme.ps1
+.gitignore
+.env.example
+SECURITY.md

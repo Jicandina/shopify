@@ -1,0 +1,51 @@
+{% assign featured_product = section.settings.product %}
+{% assign hero_image = section.settings.hero_image | default: featured_product.featured_image %}
+
+<section class="hero">
+  <div class="hero-copy fade-up">
+    <p class="eyebrow">{{ section.settings.eyebrow }}</p>
+    <h1>{{ section.settings.heading | newline_to_br }}</h1>
+    <p class="hero-text">{{ section.settings.description }}</p>
+    <div class="hero-actions">
+      {% if featured_product != blank %}<a class="button" href="{{ featured_product.url }}">{{ section.settings.primary_label }}</a>{% endif %}
+      <a class="button button--quiet" href="#details">{{ section.settings.secondary_label }}</a>
+    </div>
+  </div>
+  <div class="hero-object fade-up" style="transition-delay:.12s">
+    <div class="orbit"></div><span class="orbital-label">Countertop object, 01</span>
+    <div class="product-tilt" data-tilt>
+      {% if hero_image != blank %}{{ hero_image | image_url: width: 1400 | image_tag: loading: 'eager', widths: '520, 760, 1000, 1400', alt: section.settings.product_alt }}{% else %}<img src="{{ 'auralis-extractor-hero.jpg' | asset_url }}" alt="{{ section.settings.product_alt | escape }}" loading="eager">{% endif %}
+    </div>
+  </div>
+  <span class="scroll-cue">Scroll to inspect</span>
+</section>
+
+<section class="section" id="details">
+  <div class="section-heading fade-up"><p class="eyebrow">The daily ritual</p><h2>{{ section.settings.story_heading }}</h2><p>{{ section.settings.story_copy }}</p></div>
+  <div class="story-grid">
+    <div class="fade-up"><div class="story-image">{% if section.settings.story_image != blank %}{{ section.settings.story_image | image_url: width: 1400 | image_tag: loading: 'lazy', alt: section.settings.story_image.alt }}{% else %}<img src="{{ 'auralis-extractor-cooking.jpg' | asset_url }}" alt="Portable extractor beside a stovetop" loading="lazy">{% endif %}</div><p class="story-caption">A smaller footprint for the countertop.</p></div>
+    <div class="feature-stack fade-up" style="transition-delay:.1s">
+      {% for block in section.blocks %}<article class="feature" {{ block.shopify_attributes }}><span class="feature-number">0{{ forloop.index }}</span><h3>{{ block.settings.title }}</h3><p>{{ block.settings.text }}</p></article>{% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="detail-grid">
+  <div class="detail-grid__copy fade-up"><p class="eyebrow">Built to be seen</p><h2>{{ section.settings.detail_heading }}</h2><p>{{ section.settings.detail_copy }}</p></div>
+  <div class="detail-grid__image">{% if section.settings.detail_image != blank %}{{ section.settings.detail_image | image_url: width: 1400 | image_tag: loading: 'lazy', alt: section.settings.detail_image.alt }}{% else %}<img src="{{ 'auralis-extractor-detail.jpg' | asset_url }}" alt="Portable extractor details" loading="lazy">{% endif %}</div>
+</section>
+
+<section class="purchase-panel fade-up">
+  <div><p class="eyebrow">{{ section.settings.purchase_eyebrow }}</p><h2>{{ section.settings.purchase_heading }}</h2></div>
+  {% if featured_product != blank %}
+    {% form 'product', featured_product, class: 'product-form' %}
+      <span class="product-price">{{ featured_product.price | money }}</span>
+      {% unless featured_product.has_only_default_variant %}<label class="visually-hidden" for="home-variant">Variant</label><select id="home-variant" name="id">{% for variant in featured_product.variants %}<option value="{{ variant.id }}" {% unless variant.available %}disabled{% endunless %}>{{ variant.title }} · {{ variant.price | money }}</option>{% endfor %}</select>{% else %}<input type="hidden" name="id" value="{{ featured_product.selected_or_first_available_variant.id }}">{% endunless %}
+      <button class="button" type="submit" {% unless featured_product.available %}disabled{% endunless %}>{% if featured_product.available %}{{ section.settings.purchase_label }}{% else %}Sold out{% endif %}</button>
+    {% endform %}
+  {% else %}<a class="button" href="{{ routes.all_products_collection_url }}">{{ section.settings.purchase_label }}</a>{% endif %}
+</section>
+
+{% schema %}
+{"name":"Auralis home","settings":[{"type":"product","id":"product","label":"Featured product"},{"type":"image_picker","id":"hero_image","label":"Hero image"},{"type":"text","id":"product_alt","label":"Product image alt text","default":"Portable countertop extractor"},{"type":"text","id":"eyebrow","label":"Hero eyebrow","default":"Auralis, objects for small rituals"},{"type":"textarea","id":"heading","label":"Hero heading","default":"Make room for\nwhat you love to cook."},{"type":"textarea","id":"description","label":"Hero description","default":"A considered countertop object for the moments that happen around a pan, a plate, and the people waiting nearby."},{"type":"text","id":"primary_label","label":"Primary button","default":"Meet the object"},{"type":"text","id":"secondary_label","label":"Secondary button","default":"See details"},{"type":"text","id":"story_heading","label":"Story heading","default":"A little more ease around the stove."},{"type":"textarea","id":"story_copy","label":"Story copy","default":"Designed as a compact, portable object with a distinct visual presence. Edit the copy below to match verified product specifications before publishing."},{"type":"image_picker","id":"story_image","label":"Story image"},{"type":"text","id":"detail_heading","label":"Detail heading","default":"Quietly part of the room."},{"type":"textarea","id":"detail_copy","label":"Detail copy","default":"The material and form do the talking. Use this section for supplier-verified details, care instructions, or your own product story."},{"type":"image_picker","id":"detail_image","label":"Detail image"},{"type":"text","id":"purchase_eyebrow","label":"Purchase eyebrow","default":"First drop"},{"type":"text","id":"purchase_heading","label":"Purchase heading","default":"Bring a little calm to the countertop."},{"type":"text","id":"purchase_label","label":"Purchase button","default":"Add to bag"}],"blocks":[{"type":"feature","name":"Feature","settings":[{"type":"text","id":"title","label":"Title","default":"Portable by design"},{"type":"textarea","id":"text","label":"Text","default":"Use only claims you can verify in your supplier documentation."}]}],"max_blocks":3,"presets":[{"name":"Auralis home","blocks":[{"type":"feature","settings":{"title":"A compact presence","text":"Designed to sit comfortably in the rhythm of a real kitchen."}},{"type":"feature","settings":{"title":"Rechargeable format","text":"Confirm final charging details and included accessories before launch."}},{"type":"feature","settings":{"title":"Care, considered","text":"Replace this with your verified care guidance and product warranty."}}]}]}
+{% endschema %}
