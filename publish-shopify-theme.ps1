@@ -31,7 +31,7 @@ if ($remoteNames -notcontains 'origin') {
   }
 }
 
-git add -- assets config layout locales sections templates .shopifyignore shopify-theme docs/storefront/auralis-shopify-theme.md README.md .gitignore publish-shopify-theme.ps1
+git add -- assets config layout locales sections templates .shopifyignore shopify-theme docs/storefront/auralis-shopify-theme.md docs/superpowers/specs/2026-07-26-auralis-single-product-store-design.md README.md .gitignore publish-shopify-theme.ps1
 git diff --cached --check
 git commit -m 'Add Auralis Shopify theme'
 git branch -M main

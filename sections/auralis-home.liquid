@@ -1,51 +1,81 @@
 {% assign featured_product = section.settings.product %}
 {% assign hero_image = section.settings.hero_image | default: featured_product.featured_image %}
 
-<section class="hero">
+<section class="hero hero--product">
   <div class="hero-copy fade-up">
     <p class="eyebrow">{{ section.settings.eyebrow }}</p>
     <h1>{{ section.settings.heading | newline_to_br }}</h1>
     <p class="hero-text">{{ section.settings.description }}</p>
     <div class="hero-actions">
-      {% if featured_product != blank %}<a class="button" href="{{ featured_product.url }}">{{ section.settings.primary_label }}</a>{% endif %}
-      <a class="button button--quiet" href="#details">{{ section.settings.secondary_label }}</a>
+      <a class="button" href="#buy">{{ section.settings.primary_label }}</a>
+      <a class="button button--quiet" href="#how-it-works">{{ section.settings.secondary_label }}</a>
     </div>
+    {% if featured_product != blank %}<div class="hero-purchase-note"><span>{{ featured_product.price | money }}</span><span>Available in {{ featured_product.variants.size }} option{% if featured_product.variants.size != 1 %}s{% endif %}</span></div>{% endif %}
   </div>
   <div class="hero-object fade-up" style="transition-delay:.12s">
-    <div class="orbit"></div><span class="orbital-label">Countertop object, 01</span>
+    <div class="orbit"></div><span class="orbital-label">Countertop air, close by</span>
     <div class="product-tilt" data-tilt>
       {% if hero_image != blank %}{{ hero_image | image_url: width: 1400 | image_tag: loading: 'eager', widths: '520, 760, 1000, 1400', alt: section.settings.product_alt }}{% else %}<img src="{{ 'auralis-extractor-hero.jpg' | asset_url }}" alt="{{ section.settings.product_alt | escape }}" loading="eager">{% endif %}
     </div>
   </div>
-  <span class="scroll-cue">Scroll to inspect</span>
 </section>
 
-<section class="section" id="details">
-  <div class="section-heading fade-up"><p class="eyebrow">The daily ritual</p><h2>{{ section.settings.story_heading }}</h2><p>{{ section.settings.story_copy }}</p></div>
-  <div class="story-grid">
-    <div class="fade-up"><div class="story-image">{% if section.settings.story_image != blank %}{{ section.settings.story_image | image_url: width: 1400 | image_tag: loading: 'lazy', alt: section.settings.story_image.alt }}{% else %}<img src="{{ 'auralis-extractor-cooking.jpg' | asset_url }}" alt="Portable extractor beside a stovetop" loading="lazy">{% endif %}</div><p class="story-caption">A smaller footprint for the countertop.</p></div>
-    <div class="feature-stack fade-up" style="transition-delay:.1s">
-      {% for block in section.blocks %}<article class="feature" {{ block.shopify_attributes }}><span class="feature-number">0{{ forloop.index }}</span><h3>{{ block.settings.title }}</h3><p>{{ block.settings.text }}</p></article>{% endfor %}
-    </div>
+<section class="proof-strip" aria-label="Product highlights">
+  <span>{{ section.settings.highlight_one }}</span><span>{{ section.settings.highlight_two }}</span><span>{{ section.settings.highlight_three }}</span>
+</section>
+
+<section class="buy-section" id="buy">
+  <div class="buy-gallery fade-up">
+    {% if featured_product != blank and featured_product.media.size > 0 %}
+      {% for media in featured_product.media limit: 4 %}{% if media.media_type == 'image' %}<figure class="buy-gallery__item {% if forloop.first %}buy-gallery__item--large{% endif %}">{{ media.preview_image | image_url: width: 1200 | image_tag: loading: 'lazy', widths: '480, 760, 1200', alt: media.alt }}</figure>{% endif %}{% endfor %}
+    {% else %}
+      <figure class="buy-gallery__item buy-gallery__item--large"><img src="{{ 'auralis-extractor-hero.jpg' | asset_url }}" alt="Portable countertop extractor" loading="lazy"></figure>
+      <figure class="buy-gallery__item"><img src="{{ 'auralis-extractor-cooking.jpg' | asset_url }}" alt="Extractor placed next to a pan" loading="lazy"></figure>
+      <figure class="buy-gallery__item"><img src="{{ 'auralis-extractor-detail.jpg' | asset_url }}" alt="Product detail" loading="lazy"></figure>
+    {% endif %}
+  </div>
+  <aside class="buy-panel fade-up" style="transition-delay:.08s">
+    <p class="eyebrow">The first Auralis object</p>
+    <h2>{% if featured_product != blank %}{{ featured_product.title }}{% else %}Portable countertop extractor{% endif %}</h2>
+    {% if featured_product != blank %}
+      <p class="buy-price">{{ featured_product.price | money }}</p>
+      {% form 'product', featured_product, class: 'buy-form', id: 'home-product-form' %}
+        {% unless featured_product.has_only_default_variant %}<label for="home-variant">Choose your option</label><select id="home-variant" name="id">{% for variant in featured_product.variants %}<option value="{{ variant.id }}" {% unless variant.available %}disabled{% endunless %}>{{ variant.title }} · {{ variant.price | money }}{% unless variant.available %} · Sold out{% endunless %}</option>{% endfor %}</select>{% else %}<input type="hidden" name="id" value="{{ featured_product.selected_or_first_available_variant.id }}">{% endunless %}
+        <label for="home-quantity">Quantity</label><div class="quantity-row"><input id="home-quantity" name="quantity" type="number" min="1" value="1"><button class="button" type="submit" {% unless featured_product.available %}disabled{% endunless %}>{% if featured_product.available %}Add to bag{% else %}Sold out{% endif %}</button></div>
+        {% if section.settings.show_dynamic_checkout %}<div class="dynamic-payment">{{ form | payment_button }}</div>{% endif %}
+      {% endform %}
+      <p class="purchase-helper">Secure checkout is handled by Shopify. Payment choices appear when enabled for the store.</p>
+    {% else %}
+      <p class="buy-price">Choose this product in the Shopify theme editor to activate price, options, and checkout.</p><a class="button" href="{{ routes.all_products_collection_url }}">View product</a>
+    {% endif %}
+  </aside>
+</section>
+
+<section class="section how-section" id="how-it-works">
+  <div class="section-heading fade-up"><p class="eyebrow">What it is</p><h2>Bring the intake closer to the moment.</h2><p>{{ section.settings.how_copy }}</p></div>
+  <div class="how-grid">
+    <article class="how-step fade-up"><span>01</span><h3>Place it nearby</h3><p>Set the compact extractor beside the cooking area, where smoke and aroma begin.</p></article>
+    <article class="how-step fade-up" style="transition-delay:.08s"><span>02</span><h3>Face the front intake</h3><p>The front filter is the intake. It is designed to pull air toward the appliance, not blow it back at the pan.</p></article>
+    <article class="how-step fade-up" style="transition-delay:.16s"><span>03</span><h3>Make cleanup simpler</h3><p>Use this space to publish verified care and replacement-filter guidance from your final supplier listing.</p></article>
   </div>
 </section>
 
-<section class="detail-grid">
-  <div class="detail-grid__copy fade-up"><p class="eyebrow">Built to be seen</p><h2>{{ section.settings.detail_heading }}</h2><p>{{ section.settings.detail_copy }}</p></div>
-  <div class="detail-grid__image">{% if section.settings.detail_image != blank %}{{ section.settings.detail_image | image_url: width: 1400 | image_tag: loading: 'lazy', alt: section.settings.detail_image.alt }}{% else %}<img src="{{ 'auralis-extractor-detail.jpg' | asset_url }}" alt="Portable extractor details" loading="lazy">{% endif %}</div>
+<section class="spec-section">
+  <div class="spec-image"><img src="{{ 'auralis-extractor-filter.jpg' | asset_url }}" alt="Front filter and product construction" loading="lazy"></div>
+  <div class="spec-content"><p class="eyebrow">At a glance</p><h2>Details, without the guesswork.</h2><div class="spec-list">
+    {% for block in section.blocks %}{% if block.type == 'spec' %}<div class="spec-row" {{ block.shopify_attributes }}><span>{{ block.settings.label }}</span><strong>{{ block.settings.value }}</strong></div>{% endif %}{% endfor %}
+  </div><p class="spec-disclaimer">Confirm final dimensions, runtime, contents, and shipping promise against the CJ product variant before publishing.</p></div>
 </section>
 
-<section class="purchase-panel fade-up">
-  <div><p class="eyebrow">{{ section.settings.purchase_eyebrow }}</p><h2>{{ section.settings.purchase_heading }}</h2></div>
-  {% if featured_product != blank %}
-    {% form 'product', featured_product, class: 'product-form' %}
-      <span class="product-price">{{ featured_product.price | money }}</span>
-      {% unless featured_product.has_only_default_variant %}<label class="visually-hidden" for="home-variant">Variant</label><select id="home-variant" name="id">{% for variant in featured_product.variants %}<option value="{{ variant.id }}" {% unless variant.available %}disabled{% endunless %}>{{ variant.title }} · {{ variant.price | money }}</option>{% endfor %}</select>{% else %}<input type="hidden" name="id" value="{{ featured_product.selected_or_first_available_variant.id }}">{% endunless %}
-      <button class="button" type="submit" {% unless featured_product.available %}disabled{% endunless %}>{% if featured_product.available %}{{ section.settings.purchase_label }}{% else %}Sold out{% endif %}</button>
-    {% endform %}
-  {% else %}<a class="button" href="{{ routes.all_products_collection_url }}">{{ section.settings.purchase_label }}</a>{% endif %}
+<section class="section support-section">
+  <div class="section-heading fade-up"><p class="eyebrow">Before you order</p><h2>Clear answers, up front.</h2></div>
+  <div class="faq-list fade-up">
+    {% for block in section.blocks %}{% if block.type == 'faq' %}<details {{ block.shopify_attributes }}><summary>{{ block.settings.question }}<span aria-hidden="true">+</span></summary><div class="faq-answer">{{ block.settings.answer }}</div></details>{% endif %}{% endfor %}
+  </div>
 </section>
+
+<section class="closing-cta"><div><p class="eyebrow">Auralis, first release</p><h2>Cooking leaves enough behind. Keep the air closer.</h2></div><a class="button button--light" href="#buy">Choose yours</a></section>
 
 {% schema %}
-{"name":"Auralis home","settings":[{"type":"product","id":"product","label":"Featured product"},{"type":"image_picker","id":"hero_image","label":"Hero image"},{"type":"text","id":"product_alt","label":"Product image alt text","default":"Portable countertop extractor"},{"type":"text","id":"eyebrow","label":"Hero eyebrow","default":"Auralis, objects for small rituals"},{"type":"textarea","id":"heading","label":"Hero heading","default":"Make room for\nwhat you love to cook."},{"type":"textarea","id":"description","label":"Hero description","default":"A considered countertop object for the moments that happen around a pan, a plate, and the people waiting nearby."},{"type":"text","id":"primary_label","label":"Primary button","default":"Meet the object"},{"type":"text","id":"secondary_label","label":"Secondary button","default":"See details"},{"type":"text","id":"story_heading","label":"Story heading","default":"A little more ease around the stove."},{"type":"textarea","id":"story_copy","label":"Story copy","default":"Designed as a compact, portable object with a distinct visual presence. Edit the copy below to match verified product specifications before publishing."},{"type":"image_picker","id":"story_image","label":"Story image"},{"type":"text","id":"detail_heading","label":"Detail heading","default":"Quietly part of the room."},{"type":"textarea","id":"detail_copy","label":"Detail copy","default":"The material and form do the talking. Use this section for supplier-verified details, care instructions, or your own product story."},{"type":"image_picker","id":"detail_image","label":"Detail image"},{"type":"text","id":"purchase_eyebrow","label":"Purchase eyebrow","default":"First drop"},{"type":"text","id":"purchase_heading","label":"Purchase heading","default":"Bring a little calm to the countertop."},{"type":"text","id":"purchase_label","label":"Purchase button","default":"Add to bag"}],"blocks":[{"type":"feature","name":"Feature","settings":[{"type":"text","id":"title","label":"Title","default":"Portable by design"},{"type":"textarea","id":"text","label":"Text","default":"Use only claims you can verify in your supplier documentation."}]}],"max_blocks":3,"presets":[{"name":"Auralis home","blocks":[{"type":"feature","settings":{"title":"A compact presence","text":"Designed to sit comfortably in the rhythm of a real kitchen."}},{"type":"feature","settings":{"title":"Rechargeable format","text":"Confirm final charging details and included accessories before launch."}},{"type":"feature","settings":{"title":"Care, considered","text":"Replace this with your verified care guidance and product warranty."}}]}]}
+{"name":"Auralis product home","settings":[{"type":"product","id":"product","label":"Featured product"},{"type":"image_picker","id":"hero_image","label":"Hero image"},{"type":"text","id":"product_alt","label":"Product image alt text","default":"Portable countertop extractor"},{"type":"text","id":"eyebrow","label":"Hero eyebrow","default":"Auralis, the countertop air object"},{"type":"textarea","id":"heading","label":"Hero heading","default":"Give cooking\na little more room."},{"type":"textarea","id":"description","label":"Hero description","default":"A compact countertop extractor designed to draw cooking fumes toward its front intake, right where the pan is."},{"type":"text","id":"primary_label","label":"Primary button","default":"Shop the extractor"},{"type":"text","id":"secondary_label","label":"Secondary button","default":"How it works"},{"type":"text","id":"highlight_one","label":"Highlight one","default":"Portable countertop format"},{"type":"text","id":"highlight_two","label":"Highlight two","default":"Front-facing air intake"},{"type":"text","id":"highlight_three","label":"Highlight three","default":"Checkout secured by Shopify"},{"type":"checkbox","id":"show_dynamic_checkout","label":"Show accelerated checkout buttons","default":true},{"type":"textarea","id":"how_copy","label":"How it works copy","default":"This is a close-range countertop extractor, not a replacement for a built-in range hood. The final product page should explain exactly what the selected supplier variant includes and supports."}],"blocks":[{"type":"spec","name":"Specification","settings":[{"type":"text","id":"label","label":"Label","default":"Power"},{"type":"text","id":"value","label":"Value","default":"Confirm with selected variant"}]},{"type":"faq","name":"FAQ","settings":[{"type":"text","id":"question","label":"Question","default":"When will my order ship?"},{"type":"textarea","id":"answer","label":"Answer","default":"Delivery estimates are shown at checkout and depend on the selected product variant and destination."}]}],"max_blocks":9,"presets":[{"name":"Auralis product home","blocks":[{"type":"spec","settings":{"label":"Format","value":"Portable countertop extractor"}},{"type":"spec","settings":{"label":"Charging","value":"USB rechargeable, verify final variant"}},{"type":"spec","settings":{"label":"Filter","value":"Front intake filter, verify care guidance"}},{"type":"faq","settings":{"question":"How does checkout work?","answer":"Shopify handles checkout and shows payment choices that are active for this store."}},{"type":"faq","settings":{"question":"When will my order arrive?","answer":"The expected delivery window appears at checkout for the chosen variant and shipping address."}},{"type":"faq","settings":{"question":"What comes in the box?","answer":"Confirm the final variant contents with the supplier listing before publishing this answer."}}]}]}
 {% endschema %}
