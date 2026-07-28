@@ -45,6 +45,19 @@
   color: var(--ink);
 }
 
+.auralis-intake__notes {
+  background: oklch(32% 0.045 150);
+  color: var(--paper);
+}
+
+.auralis-intake__notes p {
+  border-bottom-color: oklch(90% 0.012 84 / 0.2);
+}
+
+.auralis-intake__notes span {
+  color: oklch(77% 0.08 150);
+}
+
 @media (max-width: 600px) {
   .auralis-hero h1 {
     font-size: clamp(3.25rem, 14vw, 5rem);
