@@ -58,6 +58,19 @@
   color: oklch(77% 0.08 150);
 }
 
+/* Product media can be portrait, square, or landscape. Never crop the
+   physical object in the hero just to fill its stage. */
+.auralis-product-3d__face {
+  background: var(--paper);
+}
+
+.auralis-product-3d__face img {
+  aspect-ratio: 4 / 5;
+  object-fit: contain;
+  object-position: center;
+  transform: none;
+}
+
 @media (max-width: 600px) {
   .auralis-hero h1 {
     font-size: clamp(3.25rem, 14vw, 5rem);
