@@ -1,1 +1,24 @@
-{"sections":{"main":{"type":"auralis-home","settings":{"product":"","product_alt":"Portable countertop extractor","show_dynamic_checkout":true}}},"order":["main"]}
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "auralis-home",
+      "settings": {
+        "product": "auralis-countertop-smoke-extractor",
+        "product_alt": "Portable countertop extractor",
+        "show_dynamic_checkout": true
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}
