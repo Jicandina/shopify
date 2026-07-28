@@ -1,41 +1,27 @@
 <!doctype html>
 <html class="no-js" lang="{{ request.locale.iso_code }}">
   <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="theme-color" content="#e8ddd2">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#e8ddd2">
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     {{ content_for_header }}
-    {{ 'base.css' | asset_url | stylesheet_tag }}
-    {{ 'auralis-product.css' | asset_url | stylesheet_tag }}
-    {{ 'product-detail.css' | asset_url | stylesheet_tag }}
-    <script>document.documentElement.classList.remove('no-js');</script>
-    <script src="{{ 'theme.js' | asset_url }}" defer="defer"></script>
-    <script src="{{ 'product-detail.js' | asset_url }}" defer="defer"></script>
+    {{ 'base.css' | asset_url | stylesheet_tag }}{{ 'auralis-product.css' | asset_url | stylesheet_tag }}{{ 'product-detail.css' | asset_url | stylesheet_tag }}{{ 'store-operations.css' | asset_url | stylesheet_tag }}{{ 'support-pages.css' | asset_url | stylesheet_tag }}
+    <script>document.documentElement.classList.remove('no-js');</script><script src="{{ 'theme.js' | asset_url }}" defer="defer"></script><script src="{{ 'product-detail.js' | asset_url }}" defer="defer"></script>
   </head>
   <body class="template-{{ template.name | handle }}">
     <a class="skip-link" href="#MainContent">Skip to content</a>
+    {% if settings.announcement_text != blank %}<div class="announcement-bar">{% if settings.announcement_link != blank %}<a href="{{ settings.announcement_link }}">{{ settings.announcement_text }}</a>{% else %}<span>{{ settings.announcement_text }}</span>{% endif %}</div>{% endif %}
     <header class="site-header" data-site-header>
       <a class="wordmark" href="{{ routes.root_url }}" aria-label="{{ shop.name | escape }} home">{{ settings.brand_name | default: shop.name }}</a>
-      <nav class="desktop-nav" aria-label="Primary navigation">
-        {% for link in settings.menu.links %}<a href="{{ link.url }}">{{ link.title }}</a>{% endfor %}
-      </nav>
-      <div class="header-actions">
-        <a class="header-link" href="{{ routes.cart_url }}">Bag <span data-cart-count>{{ cart.item_count }}</span></a>
-        <button class="menu-button" type="button" aria-expanded="false" aria-controls="mobile-navigation" data-menu-toggle>Menu</button>
-      </div>
-      <nav id="mobile-navigation" class="mobile-nav" aria-label="Mobile navigation" data-mobile-nav>
-        {% for link in settings.menu.links %}<a href="{{ link.url }}">{{ link.title }}</a>{% endfor %}
-        <a href="{{ routes.cart_url }}">Bag ({{ cart.item_count }})</a>
-      </nav>
+      <nav class="desktop-nav" aria-label="Primary navigation">{% for link in settings.menu.links %}<a href="{{ link.url }}">{{ link.title }}</a>{% endfor %}</nav>
+      <div class="header-actions"><a class="header-link" href="{{ routes.cart_url }}">Bag <span data-cart-count>{{ cart.item_count }}</span></a><button class="menu-button" type="button" aria-expanded="false" aria-controls="mobile-navigation" data-menu-toggle>Menu</button></div>
+      <nav id="mobile-navigation" class="mobile-nav" aria-label="Mobile navigation" data-mobile-nav>{% for link in settings.menu.links %}<a href="{{ link.url }}">{{ link.title }}</a>{% endfor %}<a href="{{ routes.cart_url }}">Bag ({{ cart.item_count }})</a></nav>
     </header>
     <main id="MainContent" role="main">{{ content_for_layout }}</main>
-    <footer class="site-footer">
-      <div><a class="wordmark" href="{{ routes.root_url }}">{{ settings.brand_name | default: shop.name }}</a><p>Considered objects for the everyday room.</p></div>
-      <div class="footer-links"><a href="{{ routes.search_url }}">Search</a><a href="{{ routes.cart_url }}">Bag</a><a href="{{ routes.policies.privacy_policy.url }}">Privacy</a></div>
-      <small>© {{ 'now' | date: '%Y' }} {{ settings.brand_name | default: shop.name }}</small>
+    <footer class="site-footer site-footer--full">
+      <div class="footer-brand"><a class="wordmark" href="{{ routes.root_url }}">{{ settings.brand_name | default: shop.name }}</a><p>Practical objects for the parts of home life that deserve more attention.</p>{% if settings.support_email != blank %}<a class="footer-email" href="mailto:{{ settings.support_email }}">{{ settings.support_email }}</a>{% endif %}</div>
+      <div class="footer-newsletter"><p class="footer-heading">Stay close to the next release.</p>{% form 'customer', class: 'newsletter-form' %}<input type="hidden" name="contact[tags]" value="newsletter"><label class="visually-hidden" for="footer-email">Email</label><div><input id="footer-email" type="email" name="contact[email]" autocomplete="email" placeholder="Your email address" required><button type="submit">Join</button></div>{% if form.posted_successfully? %}<p class="form-success">You're on the list.</p>{% endif %}{% if form.errors %}<p class="form-error">Please enter a valid email.</p>{% endif %}{% endform %}</div>
+      <div class="footer-links"><a href="{{ routes.search_url }}">Search</a><a href="{{ routes.cart_url }}">Bag</a>{% if shop.enabled_payment_types.size > 0 %}<span>Secure checkout</span>{% endif %}</div>
+      <div class="footer-bottom"><small>© {{ 'now' | date: '%Y' }} {{ settings.brand_name | default: shop.name }}</small><div class="policy-links">{% if shop.privacy_policy %}<a href="{{ shop.privacy_policy.url }}">Privacy</a>{% endif %}{% if shop.refund_policy %}<a href="{{ shop.refund_policy.url }}">Returns</a>{% endif %}{% if shop.shipping_policy %}<a href="{{ shop.shipping_policy.url }}">Shipping</a>{% endif %}</div>{% if shop.enabled_payment_types.size > 0 %}<ul class="payment-icons" role="list">{% for type in shop.enabled_payment_types %}<li>{{ type | payment_type_svg_tag: class: 'payment-icon' }}</li>{% endfor %}</ul>{% endif %}</div>
     </footer>
   </body>
 </html>
