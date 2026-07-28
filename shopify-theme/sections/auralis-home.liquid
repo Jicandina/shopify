@@ -51,12 +51,19 @@
   </aside>
 </section>
 
-<section class="section how-section" id="how-it-works">
-  <div class="section-heading fade-up"><p class="eyebrow">What it is</p><h2>Bring the intake closer to the moment.</h2><p>{{ section.settings.how_copy }}</p></div>
-  <div class="how-grid">
-    <article class="how-step fade-up"><span>01</span><h3>Place it nearby</h3><p>Set the compact extractor beside the cooking area, where smoke and aroma begin.</p></article>
-    <article class="how-step fade-up" style="transition-delay:.08s"><span>02</span><h3>Face the front intake</h3><p>The front filter is the intake. It is designed to pull air toward the appliance, not blow it back at the pan.</p></article>
-    <article class="how-step fade-up" style="transition-delay:.16s"><span>03</span><h3>Make cleanup simpler</h3><p>Use this space to publish verified care and replacement-filter guidance from your final supplier listing.</p></article>
+<section class="airflow-section" id="how-it-works">
+  <div class="airflow-intro fade-up">
+    <p class="eyebrow">How it works</p>
+    <h2>Smoke moves toward the front. Not back into the room.</h2>
+    <p>This is a close-range countertop extractor. Put it beside the pan, point the black front grille toward the cooking smoke, and let the intake pull inward.</p>
+  </div>
+  <div class="airflow-story">
+    <figure class="airflow-photo airflow-photo--cook fade-up"><img src="{{ 'auralis-extractor-cooking.jpg' | asset_url }}" alt="Portable extractor positioned beside a cooking pan" loading="lazy"></figure>
+    <ol class="airflow-steps">
+      <li class="fade-up"><span>01</span><div><h3>Cook as usual</h3><p>Keep the source of smoke in view. The extractor works closest to the moment you are cooking.</p></div></li>
+      <li class="fade-up" style="transition-delay:.08s"><span>02</span><div><h3>Face the intake toward it</h3><p>The black front grille is the intake. Air and smoke move toward the unit. It does not blow air at the pan.</p></div></li>
+      <li class="fade-up" style="transition-delay:.16s"><span>03</span><div><h3>Use it with your kitchen ventilation</h3><p>It is a portable helper for close-range cooking, not a replacement for a built-in range hood.</p></div></li>
+    </ol>
   </div>
 </section>
 
@@ -67,14 +74,25 @@
   </div><p class="spec-disclaimer">Confirm final dimensions, runtime, contents, and shipping promise against the CJ product variant before publishing.</p></div>
 </section>
 
-<section class="section support-section">
-  <div class="section-heading fade-up"><p class="eyebrow">Before you order</p><h2>Clear answers, up front.</h2></div>
-  <div class="faq-list fade-up">
-    {% for block in section.blocks %}{% if block.type == 'faq' %}<details {{ block.shopify_attributes }}><summary>{{ block.settings.question }}<span aria-hidden="true">+</span></summary><div class="faq-answer">{{ block.settings.answer }}</div></details>{% endif %}{% endfor %}
+<section class="counter-details">
+  <div class="counter-details__copy fade-up"><p class="eyebrow">Made for the counter</p><h2>The details you can actually see.</h2><p>A compact body, three folding legs and a front filter are visible in the product imagery. Final specifications, included accessories and care instructions must always match the selected supplier variant.</p></div>
+  <div class="counter-details__grid">
+    <figure class="counter-detail counter-detail--wide fade-up"><img src="{{ 'auralis-extractor-detail.jpg' | asset_url }}" alt="Close view of the extractor body and charging port" loading="lazy"><figcaption><span>01</span> Compact format for the countertop</figcaption></figure>
+    <figure class="counter-detail fade-up" style="transition-delay:.08s"><img src="{{ 'auralis-extractor-filter.jpg' | asset_url }}" alt="Close view of the extractor front intake filter" loading="lazy"><figcaption><span>02</span> Front intake filter</figcaption></figure>
   </div>
 </section>
 
-<section class="closing-cta"><div><p class="eyebrow">Auralis, first release</p><h2>Cooking leaves enough behind. Keep the air closer.</h2></div><a class="button button--light" href="#buy">Choose yours</a></section>
+<section class="order-section">
+  <div class="order-section__heading fade-up"><p class="eyebrow">Before you order</p><h2>Nothing hidden behind the button.</h2><p>Your product page should make the final variant, delivery estimate and return terms easy to check before checkout.</p></div>
+  <div class="order-faq fade-up">
+    <details open><summary>Does it blow air toward the pan?<span aria-hidden="true">+</span></summary><div class="faq-answer">No. The front grille is the intake. The intended direction is pan and smoke toward the front filter.</div></details>
+    <details><summary>Is it a replacement for a range hood?<span aria-hidden="true">+</span></summary><div class="faq-answer">No. It is a portable, close-range extractor. Use it alongside normal kitchen ventilation.</div></details>
+    <details><summary>What will I receive?<span aria-hidden="true">+</span></summary><div class="faq-answer">The selected Shopify variant is the source of truth for its final price, images, contents and availability. Review it before publishing.</div></details>
+    <details><summary>When will it arrive?<span aria-hidden="true">+</span></summary><div class="faq-answer">Show the delivery window and return policy from your verified shipping setup. Shopify will show eligible payment methods at checkout once they are enabled.</div></details>
+  </div>
+</section>
+
+<section class="final-buy"><div class="final-buy__copy"><p class="eyebrow">Auralis, first release</p><h2>Keep the cooking moment close.</h2><p>See the final options, price and checkout on the product above.</p></div><a class="button" href="#buy">Shop the extractor</a></section>
 
 {% schema %}
 {"name":"Auralis product home","settings":[{"type":"product","id":"product","label":"Featured product"},{"type":"image_picker","id":"hero_image","label":"Hero image"},{"type":"text","id":"product_alt","label":"Product image alt text","default":"Portable countertop extractor"},{"type":"text","id":"eyebrow","label":"Hero eyebrow","default":"Auralis, the countertop air object"},{"type":"textarea","id":"heading","label":"Hero heading","default":"Give cooking\na little more room."},{"type":"textarea","id":"description","label":"Hero description","default":"A compact countertop extractor designed to draw cooking fumes toward its front intake, right where the pan is."},{"type":"text","id":"primary_label","label":"Primary button","default":"Shop the extractor"},{"type":"text","id":"secondary_label","label":"Secondary button","default":"How it works"},{"type":"text","id":"highlight_one","label":"Highlight one","default":"Portable countertop format"},{"type":"text","id":"highlight_two","label":"Highlight two","default":"Front-facing air intake"},{"type":"text","id":"highlight_three","label":"Highlight three","default":"Checkout secured by Shopify"},{"type":"checkbox","id":"show_dynamic_checkout","label":"Show accelerated checkout buttons","default":true},{"type":"textarea","id":"how_copy","label":"How it works copy","default":"This is a close-range countertop extractor, not a replacement for a built-in range hood. The final product page should explain exactly what the selected supplier variant includes and supports."}],"blocks":[{"type":"spec","name":"Specification","settings":[{"type":"text","id":"label","label":"Label","default":"Power"},{"type":"text","id":"value","label":"Value","default":"Confirm with selected variant"}]},{"type":"faq","name":"FAQ","settings":[{"type":"text","id":"question","label":"Question","default":"When will my order ship?"},{"type":"textarea","id":"answer","label":"Answer","default":"Delivery estimates are shown at checkout and depend on the selected product variant and destination."}]}],"max_blocks":9,"presets":[{"name":"Auralis product home","blocks":[{"type":"spec","settings":{"label":"Format","value":"Portable countertop extractor"}},{"type":"spec","settings":{"label":"Charging","value":"USB rechargeable, verify final variant"}},{"type":"spec","settings":{"label":"Filter","value":"Front intake filter, verify care guidance"}},{"type":"faq","settings":{"question":"How does checkout work?","answer":"Shopify handles checkout and shows payment choices that are active for this store."}},{"type":"faq","settings":{"question":"When will my order arrive?","answer":"The expected delivery window appears at checkout for the chosen variant and shipping address."}},{"type":"faq","settings":{"question":"What comes in the box?","answer":"Confirm the final variant contents with the supplier listing before publishing this answer."}}]}]}
