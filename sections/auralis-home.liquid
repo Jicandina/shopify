@@ -1,99 +1,57 @@
 {% assign featured_product = section.settings.product %}
 {% assign hero_image = section.settings.hero_image | default: featured_product.featured_image %}
 
-<section class="hero hero--product">
-  <div class="hero-copy fade-up">
-    <p class="eyebrow">{{ section.settings.eyebrow }}</p>
-    <h1>{{ section.settings.heading | newline_to_br }}</h1>
-    <p class="hero-text">{{ section.settings.description }}</p>
-    <div class="hero-actions">
-      <a class="button" href="#buy">{{ section.settings.primary_label }}</a>
-      <a class="button button--quiet" href="#how-it-works">{{ section.settings.secondary_label }}</a>
+<section class="auralis-hero" data-product-stage>
+  <div class="auralis-hero__copy" data-reveal>
+    <p class="auralis-kicker">Auralis presents</p>
+    <h1>Clear the air<br>around <em>the pan.</em></h1>
+    <p class="auralis-hero__intro">A portable countertop extractor that draws cooking smoke toward its front intake, right where it starts.</p>
+    <div class="auralis-actions"><a class="auralis-button" href="#shop">Shop the extractor <span aria-hidden="true">↘</span></a><a class="auralis-text-link" href="#intake">See how it works</a></div>
+  </div>
+  <div class="auralis-stage" aria-label="Interactive product view" data-stage-visual>
+    <div class="auralis-stage__halo"></div><div class="auralis-stage__orbit auralis-stage__orbit--one"></div><div class="auralis-stage__orbit auralis-stage__orbit--two"></div>
+    <p class="auralis-stage__label">Portable extraction<br>for the countertop</p>
+    <div class="auralis-product-3d" data-product-object>
+      <div class="auralis-product-3d__shadow"></div>
+      <div class="auralis-product-3d__back"></div>
+      <div class="auralis-product-3d__face">{% if hero_image != blank %}{{ hero_image | image_url: width: 1400 | image_tag: loading: 'eager', widths: '520, 760, 1000, 1400', alt: section.settings.product_alt }}{% else %}<img src="{{ 'auralis-extractor-hero.jpg' | asset_url }}" alt="{{ section.settings.product_alt | escape }}" loading="eager">{% endif %}</div>
     </div>
-    {% if featured_product != blank %}<div class="hero-purchase-note"><span>{{ featured_product.price | money }}</span><span>Available in {{ featured_product.variants.size }} option{% if featured_product.variants.size != 1 %}s{% endif %}</span></div>{% endif %}
+    <p class="auralis-stage__hint">Move to explore</p>
   </div>
-  <div class="hero-object fade-up" style="transition-delay:.12s">
-    <div class="orbit"></div><span class="orbital-label">Countertop air, close by</span>
-    <div class="product-tilt" data-tilt>
-      {% if hero_image != blank %}{{ hero_image | image_url: width: 1400 | image_tag: loading: 'eager', widths: '520, 760, 1000, 1400', alt: section.settings.product_alt }}{% else %}<img src="{{ 'auralis-extractor-hero.jpg' | asset_url }}" alt="{{ section.settings.product_alt | escape }}" loading="eager">{% endif %}
-    </div>
-  </div>
+  <div class="auralis-hero__foot"><span>Front-facing intake</span><span>Countertop format</span><span>Designed for close-range cooking</span></div>
 </section>
 
-<section class="proof-strip" aria-label="Product highlights">
-  <span>{{ section.settings.highlight_one }}</span><span>{{ section.settings.highlight_two }}</span><span>{{ section.settings.highlight_three }}</span>
-</section>
-
-<section class="buy-section" id="buy">
-  <div class="buy-gallery fade-up">
-    {% if featured_product != blank and featured_product.media.size > 0 %}
-      {% for media in featured_product.media limit: 4 %}{% if media.media_type == 'image' %}<figure class="buy-gallery__item {% if forloop.first %}buy-gallery__item--large{% endif %}">{{ media.preview_image | image_url: width: 1200 | image_tag: loading: 'lazy', widths: '480, 760, 1200', alt: media.alt }}</figure>{% endif %}{% endfor %}
-    {% else %}
-      <figure class="buy-gallery__item buy-gallery__item--large"><img src="{{ 'auralis-extractor-hero.jpg' | asset_url }}" alt="Portable countertop extractor" loading="lazy"></figure>
-      <figure class="buy-gallery__item"><img src="{{ 'auralis-extractor-cooking.jpg' | asset_url }}" alt="Extractor placed next to a pan" loading="lazy"></figure>
-      <figure class="buy-gallery__item"><img src="{{ 'auralis-extractor-detail.jpg' | asset_url }}" alt="Product detail" loading="lazy"></figure>
-    {% endif %}
-  </div>
-  <aside class="buy-panel fade-up" style="transition-delay:.08s">
-    <p class="eyebrow">The first Auralis object</p>
-    <h2>{% if featured_product != blank %}{{ featured_product.title }}{% else %}Portable countertop extractor{% endif %}</h2>
-    {% if featured_product != blank %}
-      <p class="buy-price">{{ featured_product.price | money }}</p>
-      {% form 'product', featured_product, class: 'buy-form', id: 'home-product-form' %}
-        {% unless featured_product.has_only_default_variant %}<label for="home-variant">Choose your option</label><select id="home-variant" name="id">{% for variant in featured_product.variants %}<option value="{{ variant.id }}" {% unless variant.available %}disabled{% endunless %}>{{ variant.title }} · {{ variant.price | money }}{% unless variant.available %} · Sold out{% endunless %}</option>{% endfor %}</select>{% else %}<input type="hidden" name="id" value="{{ featured_product.selected_or_first_available_variant.id }}">{% endunless %}
-        <label for="home-quantity">Quantity</label><div class="quantity-row"><input id="home-quantity" name="quantity" type="number" min="1" value="1"><button class="button" type="submit" {% unless featured_product.available %}disabled{% endunless %}>{% if featured_product.available %}Add to bag{% else %}Sold out{% endif %}</button></div>
-        {% if section.settings.show_dynamic_checkout %}<div class="dynamic-payment">{{ form | payment_button }}</div>{% endif %}
-      {% endform %}
-      <p class="purchase-helper">Secure checkout is handled by Shopify. Payment choices appear when enabled for the store.</p>
-    {% else %}
-      <p class="buy-price">Choose this product in the Shopify theme editor to activate price, options, and checkout.</p><a class="button" href="{{ routes.all_products_collection_url }}">View product</a>
-    {% endif %}
-  </aside>
-</section>
-
-<section class="airflow-section" id="how-it-works">
-  <div class="airflow-intro fade-up">
-    <p class="eyebrow">How it works</p>
-    <h2>Smoke moves toward the front. Not back into the room.</h2>
-    <p>This is a close-range countertop extractor. Put it beside the pan, point the black front grille toward the cooking smoke, and let the intake pull inward.</p>
-  </div>
-  <div class="airflow-story">
-    <figure class="airflow-photo airflow-photo--cook fade-up"><img src="{{ 'auralis-extractor-cooking.jpg' | asset_url }}" alt="Portable extractor positioned beside a cooking pan" loading="lazy"></figure>
-    <ol class="airflow-steps">
-      <li class="fade-up"><span>01</span><div><h3>Cook as usual</h3><p>Keep the source of smoke in view. The extractor works closest to the moment you are cooking.</p></div></li>
-      <li class="fade-up" style="transition-delay:.08s"><span>02</span><div><h3>Face the intake toward it</h3><p>The black front grille is the intake. Air and smoke move toward the unit. It does not blow air at the pan.</p></div></li>
-      <li class="fade-up" style="transition-delay:.16s"><span>03</span><div><h3>Use it with your kitchen ventilation</h3><p>It is a portable helper for close-range cooking, not a replacement for a built-in range hood.</p></div></li>
-    </ol>
+<section class="auralis-intake" id="intake" data-intake-section>
+  <div class="auralis-intake__lead"><p class="auralis-kicker">The intake is the point</p><h2>It pulls <em>in.</em><br>It does not blow out.</h2></div>
+  <div class="auralis-intake__scene">
+    <figure class="auralis-intake__image"><img src="{{ 'auralis-extractor-cooking.jpg' | asset_url }}" alt="The extractor beside a pan, facing cooking smoke" loading="lazy"></figure>
+    <div class="auralis-air-path" aria-hidden="true"><i></i><i></i><i></i><b>Smoke moves toward the black front grille</b></div>
+    <div class="auralis-intake__notes"><p><span>01</span> Set it beside the source</p><p><span>02</span> Aim the black grille at the smoke</p><p><span>03</span> Use it alongside normal kitchen ventilation</p></div>
   </div>
 </section>
 
-<section class="spec-section">
-  <div class="spec-image"><img src="{{ 'auralis-extractor-filter.jpg' | asset_url }}" alt="Front filter and product construction" loading="lazy"></div>
-  <div class="spec-content"><p class="eyebrow">At a glance</p><h2>Details, without the guesswork.</h2><div class="spec-list">
-    {% for block in section.blocks %}{% if block.type == 'spec' %}<div class="spec-row" {{ block.shopify_attributes }}><span>{{ block.settings.label }}</span><strong>{{ block.settings.value }}</strong></div>{% endif %}{% endfor %}
-  </div><p class="spec-disclaimer">Confirm final dimensions, runtime, contents, and shipping promise against the CJ product variant before publishing.</p></div>
+<section class="auralis-object-grid">
+  <div class="auralis-object-grid__title"><p class="auralis-kicker">One object, close up</p><h2>Made to stay<br>on the counter.</h2></div>
+  <figure class="auralis-object-card auralis-object-card--large"><img src="{{ 'auralis-extractor-detail.jpg' | asset_url }}" alt="Close-up of the portable extractor body" loading="lazy"><figcaption>Small footprint, considered form.</figcaption></figure>
+  <figure class="auralis-object-card"><img src="{{ 'auralis-extractor-filter.jpg' | asset_url }}" alt="Front intake filter detail" loading="lazy"><figcaption>The front is the intake.</figcaption></figure>
+  <div class="auralis-object-grid__statement"><p>Portable when the cooking happens beyond the built-in hood.</p><span>Not a replacement for a range hood.</span></div>
 </section>
 
-<section class="counter-details">
-  <div class="counter-details__copy fade-up"><p class="eyebrow">Made for the counter</p><h2>The details you can actually see.</h2><p>A compact body, three folding legs and a front filter are visible in the product imagery. Final specifications, included accessories and care instructions must always match the selected supplier variant.</p></div>
-  <div class="counter-details__grid">
-    <figure class="counter-detail counter-detail--wide fade-up"><img src="{{ 'auralis-extractor-detail.jpg' | asset_url }}" alt="Close view of the extractor body and charging port" loading="lazy"><figcaption><span>01</span> Compact format for the countertop</figcaption></figure>
-    <figure class="counter-detail fade-up" style="transition-delay:.08s"><img src="{{ 'auralis-extractor-filter.jpg' | asset_url }}" alt="Close view of the extractor front intake filter" loading="lazy"><figcaption><span>02</span> Front intake filter</figcaption></figure>
+<section class="auralis-shop" id="shop">
+  <div class="auralis-shop__intro"><p class="auralis-kicker">The first Auralis object</p><h2>Ready to make room for.</h2><p>Choose the verified product option below. Final price, included contents and availability come directly from your Shopify product.</p></div>
+  <div class="auralis-purchase" data-purchase-panel>
+    <div class="auralis-purchase__media">{% if featured_product != blank and featured_product.featured_image != blank %}{{ featured_product.featured_image | image_url: width: 1200 | image_tag: loading: 'lazy', widths: '480, 760, 1200', alt: featured_product.title }}{% else %}<img src="{{ 'auralis-extractor-hero.jpg' | asset_url }}" alt="Portable countertop extractor" loading="lazy">{% endif %}</div>
+    <div class="auralis-purchase__form"><p class="auralis-kicker">{{ featured_product.vendor | default: 'Auralis' }}</p><h3>{% if featured_product != blank %}{{ featured_product.title }}{% else %}Portable countertop extractor{% endif %}</h3>{% if featured_product != blank %}<p class="auralis-price">{{ featured_product.price | money }}</p>{% form 'product', featured_product, class: 'auralis-form', id: 'home-product-form' %}{% unless featured_product.has_only_default_variant %}<label for="home-variant">Choose your option</label><select id="home-variant" name="id">{% for variant in featured_product.variants %}<option value="{{ variant.id }}" {% unless variant.available %}disabled{% endunless %}>{{ variant.title }} · {{ variant.price | money }}{% unless variant.available %} · Sold out{% endunless %}</option>{% endfor %}</select>{% else %}<input type="hidden" name="id" value="{{ featured_product.selected_or_first_available_variant.id }}">{% endunless %}<div class="auralis-form__row"><label for="home-quantity">Qty<input id="home-quantity" name="quantity" type="number" min="1" value="1"></label><button class="auralis-button" type="submit" {% unless featured_product.available %}disabled{% endunless %}>{% if featured_product.available %}Add to bag <span aria-hidden="true">↗</span>{% else %}Sold out{% endif %}</button></div>{% if section.settings.show_dynamic_checkout %}<div class="auralis-dynamic-checkout">{{ form | payment_button }}</div>{% endif %}{% endform %}<p class="auralis-purchase__note">Secure checkout is handled by Shopify. Payment methods appear when they are activated for this store.</p>{% else %}<p class="auralis-price">Choose the product in the Shopify theme editor to activate the real price, options and checkout.</p>{% endif %}</div>
   </div>
 </section>
 
-<section class="order-section">
-  <div class="order-section__heading fade-up"><p class="eyebrow">Before you order</p><h2>Nothing hidden behind the button.</h2><p>Your product page should make the final variant, delivery estimate and return terms easy to check before checkout.</p></div>
-  <div class="order-faq fade-up">
-    <details open><summary>Does it blow air toward the pan?<span aria-hidden="true">+</span></summary><div class="faq-answer">No. The front grille is the intake. The intended direction is pan and smoke toward the front filter.</div></details>
-    <details><summary>Is it a replacement for a range hood?<span aria-hidden="true">+</span></summary><div class="faq-answer">No. It is a portable, close-range extractor. Use it alongside normal kitchen ventilation.</div></details>
-    <details><summary>What will I receive?<span aria-hidden="true">+</span></summary><div class="faq-answer">The selected Shopify variant is the source of truth for its final price, images, contents and availability. Review it before publishing.</div></details>
-    <details><summary>When will it arrive?<span aria-hidden="true">+</span></summary><div class="faq-answer">Show the delivery window and return policy from your verified shipping setup. Shopify will show eligible payment methods at checkout once they are enabled.</div></details>
-  </div>
+<section class="auralis-answers">
+  <div><p class="auralis-kicker">Before you order</p><h2>Everything should be clear before checkout.</h2></div>
+  <div class="auralis-answers__list"><details open><summary>Does it blow air toward the pan?<span>+</span></summary><p>No. The black front grille is the intake. The intended airflow moves from the pan and smoke toward the device.</p></details><details><summary>Does it replace a range hood?<span>+</span></summary><p>No. It is a portable close-range extractor. Use it alongside normal kitchen ventilation.</p></details><details><summary>What arrives in the box?<span>+</span></summary><p>Use the selected Shopify variant as the source of truth for contents, dimensions and included accessories.</p></details><details><summary>How do payment and delivery work?<span>+</span></summary><p>Shopify displays enabled payment methods at checkout. Publish delivery and return terms only after confirming the supplier variant.</p></details></div>
 </section>
 
-<section class="final-buy"><div class="final-buy__copy"><p class="eyebrow">Auralis, first release</p><h2>Keep the cooking moment close.</h2><p>See the final options, price and checkout on the product above.</p></div><a class="button" href="#buy">Shop the extractor</a></section>
+<section class="auralis-final"><p class="auralis-kicker">Auralis</p><h2>Give cooking<br>some room.</h2><a class="auralis-button auralis-button--paper" href="#shop">Shop the extractor <span aria-hidden="true">↘</span></a></section>
 
 {% schema %}
-{"name":"Auralis product home","settings":[{"type":"product","id":"product","label":"Featured product"},{"type":"image_picker","id":"hero_image","label":"Hero image"},{"type":"text","id":"product_alt","label":"Product image alt text","default":"Portable countertop extractor"},{"type":"text","id":"eyebrow","label":"Hero eyebrow","default":"Auralis, the countertop air object"},{"type":"textarea","id":"heading","label":"Hero heading","default":"Give cooking\na little more room."},{"type":"textarea","id":"description","label":"Hero description","default":"A compact countertop extractor designed to draw cooking fumes toward its front intake, right where the pan is."},{"type":"text","id":"primary_label","label":"Primary button","default":"Shop the extractor"},{"type":"text","id":"secondary_label","label":"Secondary button","default":"How it works"},{"type":"text","id":"highlight_one","label":"Highlight one","default":"Portable countertop format"},{"type":"text","id":"highlight_two","label":"Highlight two","default":"Front-facing air intake"},{"type":"text","id":"highlight_three","label":"Highlight three","default":"Checkout secured by Shopify"},{"type":"checkbox","id":"show_dynamic_checkout","label":"Show accelerated checkout buttons","default":true},{"type":"textarea","id":"how_copy","label":"How it works copy","default":"This is a close-range countertop extractor, not a replacement for a built-in range hood. The final product page should explain exactly what the selected supplier variant includes and supports."}],"blocks":[{"type":"spec","name":"Specification","settings":[{"type":"text","id":"label","label":"Label","default":"Power"},{"type":"text","id":"value","label":"Value","default":"Confirm with selected variant"}]},{"type":"faq","name":"FAQ","settings":[{"type":"text","id":"question","label":"Question","default":"When will my order ship?"},{"type":"textarea","id":"answer","label":"Answer","default":"Delivery estimates are shown at checkout and depend on the selected product variant and destination."}]}],"max_blocks":9,"presets":[{"name":"Auralis product home","blocks":[{"type":"spec","settings":{"label":"Format","value":"Portable countertop extractor"}},{"type":"spec","settings":{"label":"Charging","value":"USB rechargeable, verify final variant"}},{"type":"spec","settings":{"label":"Filter","value":"Front intake filter, verify care guidance"}},{"type":"faq","settings":{"question":"How does checkout work?","answer":"Shopify handles checkout and shows payment choices that are active for this store."}},{"type":"faq","settings":{"question":"When will my order arrive?","answer":"The expected delivery window appears at checkout for the chosen variant and shipping address."}},{"type":"faq","settings":{"question":"What comes in the box?","answer":"Confirm the final variant contents with the supplier listing before publishing this answer."}}]}]}
+{"name":"Auralis immersive home","settings":[{"type":"product","id":"product","label":"Featured product"},{"type":"image_picker","id":"hero_image","label":"Hero image"},{"type":"text","id":"product_alt","label":"Product image alt text","default":"Portable countertop extractor"},{"type":"checkbox","id":"show_dynamic_checkout","label":"Show accelerated checkout buttons","default":true}],"presets":[{"name":"Auralis immersive home"}]}
 {% endschema %}

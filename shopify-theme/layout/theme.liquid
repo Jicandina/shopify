@@ -5,7 +5,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     {{ content_for_header }}
     {{ 'base.css' | asset_url | stylesheet_tag }}{{ 'auralis-product.css' | asset_url | stylesheet_tag }}{{ 'product-detail.css' | asset_url | stylesheet_tag }}{{ 'store-operations.css' | asset_url | stylesheet_tag }}{{ 'support-pages.css' | asset_url | stylesheet_tag }}
-    <script>document.documentElement.classList.remove('no-js');</script><script src="{{ 'theme.js' | asset_url }}" defer="defer"></script><script src="{{ 'product-detail.js' | asset_url }}" defer="defer"></script>
+    <script>document.documentElement.classList.remove('no-js');</script><script src="{{ 'theme.js' | asset_url }}" defer="defer"></script><script src="{{ 'product-detail.js' | asset_url }}" defer="defer"></script><script src="{{ 'auralis-immersive.js' | asset_url }}" defer="defer"></script>
   </head>
   <body class="template-{{ template.name | handle }}">
     <a class="skip-link" href="#MainContent">Skip to content</a>
