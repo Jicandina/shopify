@@ -15,6 +15,36 @@
   font-size: clamp(3.55rem, 6.8vw, 7.5rem);
 }
 
+.auralis-hero h1 em {
+  color: var(--moss);
+}
+
+/* The two product chapters share the store's shipping green. */
+.auralis-intake,
+.auralis-shop {
+  background: var(--moss);
+  color: var(--paper);
+}
+
+.auralis-intake h2 em {
+  color: var(--paper);
+}
+
+.auralis-intake .auralis-kicker,
+.auralis-shop .auralis-kicker {
+  color: oklch(94% 0.012 84 / 0.72);
+}
+
+.auralis-intake .auralis-kicker strong {
+  color: var(--paper);
+  font: inherit;
+}
+
+.auralis-purchase {
+  background: var(--paper);
+  color: var(--ink);
+}
+
 @media (max-width: 600px) {
   .auralis-hero h1 {
     font-size: clamp(3.25rem, 14vw, 5rem);
