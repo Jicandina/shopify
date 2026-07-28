@@ -37,10 +37,33 @@
 </section>
 
 <section class="auralis-shop" id="shop">
-  <div class="auralis-shop__intro"><p class="auralis-kicker">The first Auralis object</p><h2>Ready to make room for.</h2><p>Choose the verified product option below. Final price, included contents and availability come directly from your Shopify product.</p></div>
+  <div class="auralis-shop__intro"><p class="auralis-kicker">The first Auralis object</p><h2>Ready to make room for.</h2><p>Choose a finish, browse every angle, then add the exact available variant to your bag.</p></div>
+  {% comment %}
   <div class="auralis-purchase" data-purchase-panel>
     <div class="auralis-purchase__media">{% if featured_product != blank and featured_product.featured_image != blank %}{{ featured_product.featured_image | image_url: width: 1200 | image_tag: loading: 'lazy', widths: '480, 760, 1200', alt: featured_product.title }}{% else %}<img src="{{ 'auralis-extractor-hero.jpg' | asset_url }}" alt="Portable countertop extractor" loading="lazy">{% endif %}</div>
     <div class="auralis-purchase__form"><p class="auralis-kicker">{{ featured_product.vendor | default: 'Auralis' }}</p><h3>{% if featured_product != blank %}{{ featured_product.title }}{% else %}Portable countertop extractor{% endif %}</h3>{% if featured_product != blank %}<p class="auralis-price">{{ featured_product.price | money }}</p>{% form 'product', featured_product, class: 'auralis-form', id: 'home-product-form' %}{% unless featured_product.has_only_default_variant %}<label for="home-variant">Choose your option</label><select id="home-variant" name="id">{% for variant in featured_product.variants %}<option value="{{ variant.id }}" {% unless variant.available %}disabled{% endunless %}>{{ variant.title }} · {{ variant.price | money }}{% unless variant.available %} · Sold out{% endunless %}</option>{% endfor %}</select>{% else %}<input type="hidden" name="id" value="{{ featured_product.selected_or_first_available_variant.id }}">{% endunless %}<div class="auralis-form__row"><label for="home-quantity">Qty<input id="home-quantity" name="quantity" type="number" min="1" value="1"></label><button class="auralis-button" type="submit" {% unless featured_product.available %}disabled{% endunless %}>{% if featured_product.available %}Add to bag <span aria-hidden="true">↗</span>{% else %}Sold out{% endif %}</button></div>{% if section.settings.show_dynamic_checkout %}<div class="auralis-dynamic-checkout">{{ form | payment_button }}</div>{% endif %}{% endform %}<p class="auralis-purchase__note">Secure checkout is handled by Shopify. Payment methods appear when they are activated for this store.</p>{% else %}<p class="auralis-price">Choose the product in the Shopify theme editor to activate the real price, options and checkout.</p>{% endif %}</div>
+  </div>
+  {% endcomment %}
+  <div class="auralis-purchase" data-purchase-panel>
+    {% if featured_product != blank %}
+      {% assign selected_variant = featured_product.selected_or_first_available_variant %}
+      {% assign initial_media = selected_variant.featured_media | default: featured_product.featured_media %}
+      <div class="auralis-gallery" data-product-gallery>
+        <div class="auralis-gallery__thumbs" aria-label="Product gallery">
+          {% for media in featured_product.media %}{% if media.media_type == 'image' %}
+            <button class="auralis-gallery__thumb{% if media.id == initial_media.id %} is-active{% endif %}" type="button" data-gallery-thumb data-media-id="{{ media.id }}" aria-label="View image {{ forloop.index }}" aria-pressed="{% if media.id == initial_media.id %}true{% else %}false{% endif %}">{{ media.preview_image | image_url: width: 180 | image_tag: loading: 'lazy', widths: '90, 180', alt: media.alt | default: featured_product.title }}</button>
+          {% endif %}{% endfor %}
+        </div>
+        <div class="auralis-gallery__viewport" aria-live="polite">
+          {% for media in featured_product.media %}{% if media.media_type == 'image' %}
+            <figure class="auralis-gallery__slide{% if media.id == initial_media.id %} is-active{% endif %}" data-gallery-slide data-media-id="{{ media.id }}"{% unless media.id == initial_media.id %} hidden{% endunless %}>{{ media.preview_image | image_url: width: 1400 | image_tag: loading: 'lazy', widths: '520, 760, 1040, 1400', alt: media.alt | default: featured_product.title }}</figure>
+          {% endif %}{% endfor %}
+        </div>
+      </div>
+      <div class="auralis-purchase__form"><p class="auralis-kicker">{{ featured_product.vendor | default: 'Auralis' }}</p><h3>{{ featured_product.title }}</h3><p class="auralis-price" data-variant-price>{{ selected_variant.price | money }}</p>{% form 'product', featured_product, class: 'auralis-form', id: 'home-product-form' %}{% unless featured_product.has_only_default_variant %}<fieldset class="auralis-colours"><legend>Finish <span data-selected-colour>{{ selected_variant.title }}</span></legend><div>{% for variant in featured_product.variants %}<button class="auralis-colour{% if variant.id == selected_variant.id %} is-active{% endif %}" type="button" data-variant-picker data-variant-id="{{ variant.id }}" data-media-id="{{ variant.featured_media.id }}" data-price="{{ variant.price | money }}" {% unless variant.available %}disabled{% endunless %}>{{ variant.title }}</button>{% endfor %}</div></fieldset><select class="auralis-native-variant" id="home-variant" name="id" aria-label="Finish">{% for variant in featured_product.variants %}<option value="{{ variant.id }}" data-media-id="{{ variant.featured_media.id }}" data-price="{{ variant.price | money }}" {% if variant.id == selected_variant.id %}selected{% endif %}{% unless variant.available %}disabled{% endunless %}>{{ variant.title }}</option>{% endfor %}</select>{% else %}<input type="hidden" name="id" value="{{ selected_variant.id }}">{% endunless %}<div class="auralis-form__row"><label for="home-quantity">Qty<input id="home-quantity" name="quantity" type="number" min="1" value="1"></label><button class="auralis-button" type="submit" {% unless selected_variant.available %}disabled{% endunless %}>Add to bag <span aria-hidden="true">â†—</span></button></div>{% if section.settings.show_dynamic_checkout %}<div class="auralis-dynamic-checkout">{{ form | payment_button }}</div>{% endif %}{% endform %}<p class="auralis-purchase__note">Secure checkout is handled by Shopify. Payment methods appear when they are activated for this store.</p></div>
+    {% else %}
+      <div class="auralis-purchase__media"><img src="{{ 'auralis-extractor-hero.jpg' | asset_url }}" alt="Portable countertop extractor" loading="lazy"></div><div class="auralis-purchase__form"><p class="auralis-price">Choose the product in the Shopify theme editor to activate the real price, options and checkout.</p></div>
+    {% endif %}
   </div>
 </section>
 

@@ -71,6 +71,92 @@
   transform: none;
 }
 
+/* A real product gallery, rather than a single static merchandising image. */
+.auralis-purchase {
+  grid-template-columns: minmax(20rem, 1.18fr) minmax(18rem, 0.82fr);
+}
+
+.auralis-gallery {
+  display: grid;
+  grid-template-columns: 4.2rem minmax(0, 1fr);
+  gap: 0.8rem;
+  min-width: 0;
+  padding: 1rem;
+  background: oklch(94% 0.012 84);
+}
+
+.auralis-gallery__thumbs {
+  display: grid;
+  align-content: start;
+  gap: 0.55rem;
+  max-height: 36rem;
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+
+.auralis-gallery__thumb {
+  display: block;
+  aspect-ratio: 1;
+  overflow: hidden;
+  padding: 0;
+  border: 1px solid transparent;
+  background: var(--paper);
+  cursor: pointer;
+  transition: border-color 180ms ease, transform 180ms ease;
+}
+
+.auralis-gallery__thumb:hover,
+.auralis-gallery__thumb:focus-visible,
+.auralis-gallery__thumb.is-active {
+  border-color: var(--ink);
+  outline: none;
+}
+
+.auralis-gallery__thumb:hover { transform: translateY(-2px); }
+.auralis-gallery__thumb img { width: 100%; height: 100%; object-fit: cover; }
+
+.auralis-gallery__viewport {
+  min-height: clamp(28rem, 45vw, 42rem);
+  background: var(--paper);
+}
+
+.auralis-gallery__slide { width: 100%; height: 100%; margin: 0; }
+.auralis-gallery__slide img { display: block; width: 100%; height: 100%; object-fit: contain; }
+
+.auralis-colours { margin: 0; padding: 0; border: 0; }
+.auralis-colours legend { margin-bottom: 0.7rem; font-size: 0.7rem; font-weight: 800; }
+.auralis-colours legend span { color: var(--muted); font-weight: 600; }
+.auralis-colours > div { display: flex; flex-wrap: wrap; gap: 0.55rem; }
+
+.auralis-colour {
+  min-height: 2.8rem;
+  padding: 0.55rem 0.8rem;
+  border: 1px solid oklch(28% 0.018 61 / 0.3);
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  font: 700 0.72rem Manrope, Arial, sans-serif;
+  letter-spacing: 0.01em;
+}
+
+.auralis-colour.is-active,
+.auralis-colour:hover,
+.auralis-colour:focus-visible {
+  border-color: var(--ink);
+  background: var(--ink);
+  color: var(--paper);
+  outline: none;
+}
+
+.auralis-colour:disabled { cursor: not-allowed; opacity: 0.42; }
+.auralis-native-variant { position: absolute; width: 1px; height: 1px; overflow: hidden; opacity: 0; pointer-events: none; }
+
+@media (max-width: 800px) {
+  .auralis-gallery { grid-template-columns: 1fr; }
+  .auralis-gallery__thumbs { grid-template-columns: repeat(5, minmax(3.6rem, 1fr)); grid-auto-flow: column; overflow-x: auto; overflow-y: hidden; max-height: none; }
+  .auralis-gallery__viewport { min-height: min(110vw, 34rem); }
+}
+
 @media (max-width: 600px) {
   .auralis-hero h1 {
     font-size: clamp(3.25rem, 14vw, 5rem);

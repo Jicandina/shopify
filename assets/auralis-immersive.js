@@ -32,3 +32,49 @@
   animate();
   window.addEventListener('pagehide', () => cancelAnimationFrame(frame), { once: true });
 })();
+
+(() => {
+  document.querySelectorAll('[data-product-gallery]').forEach((gallery) => {
+    const purchase = gallery.closest('[data-purchase-panel]');
+    const select = purchase?.querySelector('.auralis-native-variant');
+    const price = purchase?.querySelector('[data-variant-price]');
+    const colour = purchase?.querySelector('[data-selected-colour]');
+    const thumbs = [...gallery.querySelectorAll('[data-gallery-thumb]')];
+    const slides = [...gallery.querySelectorAll('[data-gallery-slide]')];
+    const pickers = purchase ? [...purchase.querySelectorAll('[data-variant-picker]')] : [];
+
+    const showMedia = (mediaId) => {
+      if (!mediaId) return;
+      slides.forEach((slide) => {
+        const active = slide.dataset.mediaId === String(mediaId);
+        slide.hidden = !active;
+        slide.classList.toggle('is-active', active);
+      });
+      thumbs.forEach((thumb) => {
+        const active = thumb.dataset.mediaId === String(mediaId);
+        thumb.classList.toggle('is-active', active);
+        thumb.setAttribute('aria-pressed', String(active));
+      });
+    };
+
+    thumbs.forEach((thumb) => thumb.addEventListener('click', () => showMedia(thumb.dataset.mediaId)));
+
+    const syncVariant = () => {
+      const option = select?.selectedOptions?.[0];
+      if (!option) return;
+      if (price && option.dataset.price) price.textContent = option.dataset.price;
+      if (colour) colour.textContent = option.textContent;
+      pickers.forEach((picker) => picker.classList.toggle('is-active', picker.dataset.variantId === select.value));
+      showMedia(option.dataset.mediaId);
+    };
+
+    pickers.forEach((picker) => picker.addEventListener('click', () => {
+      if (!select) return;
+      select.value = picker.dataset.variantId;
+      select.dispatchEvent(new Event('change', { bubbles: true }));
+    }));
+
+    select?.addEventListener('change', syncVariant);
+    syncVariant();
+  });
+})();
