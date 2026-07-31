@@ -1,5 +1,6 @@
 {% assign featured_product = section.settings.product %}
-{% assign hero_image = section.settings.hero_image | default: featured_product.featured_image %}
+{% comment %}The supplied studio asset is deliberately used here: it keeps the complete physical product in frame regardless of a manually cropped Shopify upload.{% endcomment %}
+{% assign hero_image = blank %}
 
 <section class="auralis-hero" data-product-stage>
   <div class="auralis-hero__copy" data-reveal>
