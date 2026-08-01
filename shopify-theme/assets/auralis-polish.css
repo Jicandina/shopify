@@ -59,5 +59,6 @@
     left: clamp(1.25rem, 3vw, 4.5rem);
     gap: clamp(1.5rem, 5vw, 6rem);
     padding-top: 1.25rem;
+    border-top: 0;
   }
 }
