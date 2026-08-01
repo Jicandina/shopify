@@ -17,7 +17,6 @@
       <div class="auralis-product-3d__back"></div>
       <div class="auralis-product-3d__face">{% if hero_image != blank %}{{ hero_image | image_url: width: 1400 | image_tag: loading: 'eager', widths: '520, 760, 1000, 1400', alt: section.settings.product_alt }}{% else %}<img src="{{ 'auralis-extractor-hero.jpg' | asset_url }}" alt="{{ section.settings.product_alt | escape }}" loading="eager">{% endif %}</div>
     </div>
-    <p class="auralis-stage__hint">Move to explore</p>
   </div>
   <div class="auralis-hero__foot"><span>Front-facing intake</span><span>Countertop format</span><span>Designed for close-range cooking</span></div>
 </section>
