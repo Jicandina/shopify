@@ -50,3 +50,14 @@
 @media (min-width: 901px) { .auralis-product-3d { width: min(82%, 38rem); } }
 @media (max-width: 900px) { .auralis-product-3d { width: min(88%, 32rem); }.auralis-stage { min-height: clamp(22rem, 88vw, 34rem); }.auralis-specs { grid-template-columns: 1fr; } }
 @media (max-width: 560px) { .auralis-hero__foot { grid-template-columns: 1fr; gap: .45rem; }.auralis-specs__grid { grid-template-columns: 1fr; }.auralis-specs__grid article, .auralis-specs__grid article:nth-child(even) { min-height: auto; padding: 1.15rem 0; border-left: 0; } }
+
+/* Give the three product facts their own lower rail, clear of the studio panel. */
+@media (min-width: 901px) {
+  .auralis-hero__foot {
+    right: clamp(1.25rem, 3vw, 4.5rem);
+    bottom: .45rem;
+    left: clamp(1.25rem, 3vw, 4.5rem);
+    gap: clamp(1.5rem, 5vw, 6rem);
+    padding-top: 1.25rem;
+  }
+}
