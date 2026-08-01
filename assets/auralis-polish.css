@@ -26,3 +26,27 @@
   .auralis-hero h1 { max-width: 10ch; }
   .auralis-hero__intro { margin-top: 1.45rem; }
 }
+
+/* Conversion rebuild: preserve the whole product, clarify selection, and keep controls robust on touch. */
+.auralis-hero { overflow: clip; }
+.auralis-stage { display: grid; min-width: 0; place-items: center; }
+.auralis-product-3d { position: relative; right: auto; bottom: auto; width: min(86%, 43rem); transform: rotateX(6deg) rotateY(-15deg) rotateZ(3deg); }
+.auralis-product-3d__face { display: grid; aspect-ratio: 1; place-items: center; overflow: visible; }
+.auralis-product-3d__face img { width: 100%; height: 100%; aspect-ratio: 1; object-fit: contain; object-position: center; }
+.auralis-hero__foot { align-items: center; }
+.auralis-purchase__note { display: block; margin: 1rem 0 0; color: var(--muted); font-size: .78rem; line-height: 1.5; }
+.auralis-purchase__summary, .auralis-gallery__hint { margin: .65rem 0 1.25rem; color: var(--muted); font-size: .78rem; line-height: 1.5; }
+.auralis-gallery__hint { grid-column: 1 / -1; margin-bottom: 0; }
+.auralis-gallery__thumb, .auralis-colour, .auralis-form__row input, .auralis-form__row button { touch-action: manipulation; }
+.auralis-gallery__thumb:focus-visible, .auralis-colour:focus-visible, .auralis-form__row input:focus-visible, .auralis-form__row button:focus-visible { outline: 2px solid var(--moss); outline-offset: 3px; }
+.auralis-colour[aria-pressed='true'] { border-color: var(--ink); background: var(--ink); color: var(--paper); }
+.auralis-specs { display: grid; grid-template-columns: minmax(0, .84fr) minmax(0, 1.16fr); gap: clamp(2.5rem, 8vw, 8rem); padding: clamp(4rem, 9vw, 8rem) clamp(1.25rem, 7vw, 8rem); background: var(--paper-deep); }
+.auralis-specs h2 { max-width: 10ch; margin: .7rem 0 0; font-size: clamp(2.3rem, 4vw, 4.75rem); line-height: .94; letter-spacing: -.065em; }
+.auralis-specs__grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); border-top: 1px solid var(--line); }
+.auralis-specs__grid article { display: grid; gap: .65rem; min-height: 11rem; padding: 1.5rem 1.2rem 1.5rem 0; border-bottom: 1px solid var(--line); }
+.auralis-specs__grid article:nth-child(even) { padding-left: 1.2rem; border-left: 1px solid var(--line); }
+.auralis-specs__grid strong { font-size: 1.05rem; letter-spacing: -.035em; }
+.auralis-specs__grid span { color: var(--muted); font-size: .9rem; line-height: 1.55; }
+@media (min-width: 901px) { .auralis-product-3d { width: min(82%, 38rem); } }
+@media (max-width: 900px) { .auralis-product-3d { width: min(88%, 32rem); }.auralis-stage { min-height: clamp(22rem, 88vw, 34rem); }.auralis-specs { grid-template-columns: 1fr; } }
+@media (max-width: 560px) { .auralis-hero__foot { grid-template-columns: 1fr; gap: .45rem; }.auralis-specs__grid { grid-template-columns: 1fr; }.auralis-specs__grid article, .auralis-specs__grid article:nth-child(even) { min-height: auto; padding: 1.15rem 0; border-left: 0; } }

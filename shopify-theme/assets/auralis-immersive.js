@@ -64,7 +64,11 @@
       if (!option) return;
       if (price && option.dataset.price) price.textContent = option.dataset.price;
       if (colour) colour.textContent = option.textContent;
-      pickers.forEach((picker) => picker.classList.toggle('is-active', picker.dataset.variantId === select.value));
+      pickers.forEach((picker) => {
+        const active = picker.dataset.variantId === select.value;
+        picker.classList.toggle('is-active', active);
+        picker.setAttribute('aria-pressed', String(active));
+      });
       showMedia(option.dataset.mediaId);
     };
 
