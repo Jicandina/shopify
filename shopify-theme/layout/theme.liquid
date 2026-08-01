@@ -6,6 +6,7 @@
     {{ content_for_header }}
     {{ 'base.css' | asset_url | stylesheet_tag }}{{ 'auralis-product.css' | asset_url | stylesheet_tag }}{{ 'auralis-typography.css' | asset_url | stylesheet_tag }}{{ 'product-detail.css' | asset_url | stylesheet_tag }}{{ 'store-operations.css' | asset_url | stylesheet_tag }}{{ 'support-pages.css' | asset_url | stylesheet_tag }}
     <script>document.documentElement.classList.remove('no-js');</script><script src="{{ 'theme.js' | asset_url }}" defer="defer"></script><script src="{{ 'product-detail.js' | asset_url }}" defer="defer"></script><script src="{{ 'auralis-immersive.js' | asset_url }}" defer="defer"></script>
+    {{ 'auralis-polish.css' | asset_url | stylesheet_tag }}
   </head>
   <body class="template-{{ template.name | handle }}">
     <a class="skip-link" href="#MainContent">Skip to content</a>
@@ -18,7 +19,7 @@
     </header>
     <main id="MainContent" role="main">{{ content_for_layout }}</main>
     <footer class="site-footer site-footer--full">
-      <div class="footer-brand"><a class="wordmark" href="{{ routes.root_url }}">{{ settings.brand_name | default: shop.name }}</a><p>Practical objects for the parts of home life that deserve more attention.</p>{% if settings.support_email != blank %}<a class="footer-email" href="mailto:{{ settings.support_email }}">{{ settings.support_email }}</a>{% endif %}</div>
+      <div class="footer-brand"><a class="wordmark" href="{{ routes.root_url }}">{{ settings.brand_name | default: shop.name }}</a><p>Practical objects for the parts of home life that deserve more attention.</p>{% if settings.support_email != blank and settings.support_email != 'support@example.com' %}<a class="footer-email" href="mailto:{{ settings.support_email }}">{{ settings.support_email }}</a>{% endif %}</div>
       <div class="footer-newsletter"><p class="footer-heading">Stay close to the next release.</p>{% form 'customer', class: 'newsletter-form' %}<input type="hidden" name="contact[tags]" value="newsletter"><label class="visually-hidden" for="footer-email">Email</label><div><input id="footer-email" type="email" name="contact[email]" autocomplete="email" placeholder="Your email address" required><button type="submit">Join</button></div>{% if form.posted_successfully? %}<p class="form-success">You're on the list.</p>{% endif %}{% if form.errors %}<p class="form-error">Please enter a valid email.</p>{% endif %}{% endform %}</div>
       <div class="footer-links"><a href="{{ routes.search_url }}">Search</a><a href="{{ routes.cart_url }}">Bag</a>{% if shop.enabled_payment_types.size > 0 %}<span>Secure checkout</span>{% endif %}</div>
       <div class="footer-bottom"><small>© {{ 'now' | date: '%Y' }} {{ settings.brand_name | default: shop.name }}</small><div class="policy-links">{% if shop.privacy_policy %}<a href="{{ shop.privacy_policy.url }}">Privacy</a>{% endif %}{% if shop.refund_policy %}<a href="{{ shop.refund_policy.url }}">Returns</a>{% endif %}{% if shop.shipping_policy %}<a href="{{ shop.shipping_policy.url }}">Shipping</a>{% endif %}</div>{% if shop.enabled_payment_types.size > 0 %}<ul class="payment-icons" role="list">{% for type in shop.enabled_payment_types %}<li>{{ type | payment_type_svg_tag: class: 'payment-icon' }}</li>{% endfor %}</ul>{% endif %}</div>
